@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Miss Evelin 🌹</title>
+    <!-- Fuentes bonitas de Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #2c001e, #581845, #900C3F);
+            overflow: hidden;
+            font-family: 'Poppins', sans-serif;
+            color: #fff;
+            position: relative;
+        }
+
+        /* Fondo animado con rosas y puntos */
+        .background-animation {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .particle, .floating-rose {
+            position: absolute;
+            bottom: -50px;
+            animation: floatUp 8s linear infinite;
+            opacity: 0.7;
+        }
+
+        .particle {
+            background: rgba(255, 182, 193, 0.8);
+            border-radius: 50%;
+        }
+
+        .floating-rose {
+            font-size: 26px;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) translateX(0) rotate(0deg);
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(-110vh) translateX(50px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Tarjeta principal */
+        .card {
+            position: relative;
+            z-index: 2;
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            padding: 40px 30px;
+            border-radius: 24px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            max-width: 420px;
+            width: 90%;
+            animation: fadeIn 1.2s ease-in-out;
+            transition: all 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .card h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3.2rem;
+            color: #ffb6c1;
+            margin-bottom: 12px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.4);
+        }
+
+        .card p {
+            font-size: 1.1rem;
+            color: #fce4ec;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        /* Botón "Abrir" */
+        .open-btn {
+            background: linear-gradient(45deg, #ff416c, #ff4b2b);
+            color: white;
+            padding: 14px 35px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(255, 75, 43, 0.5);
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .open-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 10px 25px rgba(255, 75, 43, 0.7);
+        }
+
+        /* Contenedor de la sorpresa (Dinosaurio) */
+        .surprise-container {
+            display: none;
+            margin-top: 20px;
+            animation: popIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes popIn {
+            0% { opacity: 0; transform: scale(0.5); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        .dino-img {
+            width: 100%;
+            max-width: 280px;
+            border-radius: 18px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            margin-bottom: 15px;
+        }
+
+        .surprise-text {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #ffe6eb;
+            font-family: 'Dancing Script', cursive;
+            font-size: 2rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Fondo de rosas y puntos flotantes -->
+    <div class="background-animation" id="bgAnimation"></div>
+
+    <!-- Tarjeta Interactiva -->
+    <div class="card">
+        <h1>Hola, Miss Evelin</h1>
+        <p>Este es mi trabajo hecho con mucho cariño 🌹✨</p>
+
+        <!-- Botón para Abrir -->
+        <button class="open-btn" id="openBtn" onclick="revelarSorpresa()">Haz clic aquí para Abrir 🎁</button>
+
+        <!-- Sección de la imagen del Dinosaurio -->
+        <div class="surprise-container" id="surprise">
+            
+            <div class="surprise-text">¡Un Willysaurio especial para usted! 🦕💖</div>
+        </div>
+    </div>
+
+    <script>
+        // Animación dinámica de rosas y puntos
+        const bgAnimation = document.getElementById('bgAnimation');
+        const totalElements = 25;
+
+        for (let i = 0; i < totalElements; i++) {
+            const isRose = i % 2 === 0;
+            const element = document.createElement('div');
+            
+            if (isRose) {
+                element.className = 'floating-rose';
+                element.innerHTML = '🌹';
+            } else {
+                element.className = 'particle';
+                const size = Math.random() * 6 + 4 + 'px';
+                element.style.width = size;
+                element.style.height = size;
+            }
+
+            element.style.left = Math.random() * 100 + 'vw';
+            element.style.animationDuration = (Math.random() * 5 + 5) + 's';
+            element.style.animationDelay = (Math.random() * 5) + 's';
+            
+            bgAnimation.appendChild(element);
+        }
+
+        // Función para mostrar la sorpresa del dinosaurio al hacer clic
+        function revelarSorpresa() {
+            const openBtn = document.getElementById('openBtn');
+            const surprise = document.getElementById('surprise');
+
+            openBtn.style.display = 'none'; // Oculta el botón
+            surprise.style.display = 'block'; // Muestra la imagen y el regalo
+        }
+    </script>
+</body>
+</html>
